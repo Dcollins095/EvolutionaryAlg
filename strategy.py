@@ -15,3 +15,10 @@ class TitForTat(Prisoner):
             return choice(['C', 'D'])
 
         return opponentsHistory[-1]
+
+class GrimTrigger(Prisoner):
+    def play(self, oppenentsHistory):
+        if 'D' in oppenentsHistory:
+            return 'D'
+        else:
+            return 'C'
