@@ -19,7 +19,7 @@ def playGame(numRounds):
 
     for i in range(2):
         # Randomly select a strategy and create an instance
-        prisoner = choice([AlwaysCooperate(), AlwaysDefect(), TitForTat()])
+        prisoner = choice(strategies)
         prisoners.append(prisoner)
         print(f"Prisoner {i + 1}: {str(prisoner.__class__.__name__)}")
 
@@ -45,11 +45,13 @@ def playGame(numRounds):
 
 def getFitness():
     print("\n********** Fitness Evaluation **********")
-    strategies = [AlwaysCooperate(), AlwaysDefect(), TitForTat(), GrimTrigger()]
     for strategy in strategies:
         avgScore = fitness(strategy)
         print(f"{strategy.__class__.__name__} Average Score: {avgScore}")
     print("***************************************")
 
+
+global strategies
+strategies = [AlwaysCooperate(), AlwaysDefect(), TitForTat(), GrimTrigger()]
 playGame(10)
 getFitness()
