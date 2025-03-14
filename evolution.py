@@ -1,6 +1,7 @@
 from random import choice, sample, random
 from strategy import AlwaysCooperate, AlwaysDefect, TitForTat, GrimTrigger
 from fitnessEval import fitness
+from matplotlib import pyplot as plt
 
 popSize = 50
 generations = 50
@@ -23,33 +24,36 @@ def mutate(strategy):
 
 def evolve():
     population = initializePopulation()
-
+    
+    bestFitness = []
+    avgFitness = []
     for generation in range(generations):
         print(f"\n=== Generation {generation + 1} ===")
 
-        # Evaluate fitness of each strategy
+        #Evaluate fitness of each strategy
         scores = {ind: fitness(ind) for ind in population}
 
-        # Sort population by fitness (higher is better)
+        #Sort population)
         population = sorted(population, key=lambda x: scores[x], reverse=True)
-
+        bestFitness.append(scores[population[0]])
+        avgFitness.append(sum(scores.values()) / len(scores))
         print("\nTop 5 Strategies:")
         for i in range(5):
             print(f"{population[i].__class__.__name__} - Fitness: {scores[population[i]]:.2f}")
 
-        # Selection and reproduction
+        #selection and reproduction
         new_population = []
         for _ in range(popSize // 2):
             parent1 = tournamentSelection(population)
             parent2 = tournamentSelection(population)
 
-            # No crossover—just copy parents and mutate
+            #no crossover—just copy parents and mutate
             offspring1 = mutate(parent1)
             offspring2 = mutate(parent2)
 
             new_population.extend([offspring1, offspring2])
 
-        # Maintain diversity by adding some random strategies
+        #add random strategies maintaing diversity
         while len(new_population) < popSize:
             new_population.append(choice(strats)())
 
@@ -58,6 +62,17 @@ def evolve():
     print("\n=== Final Population ===")
     for individual in population:
         print(f"{individual.__class__.__name__}")
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(bestFitness, label='Best Fitness')
+    plt.plot(avgFitness, label='Average Fitness')
+    plt.title('Fitness Progression over Generations')
+    plt.xlabel('Generation')
+    plt.ylabel('Fitness')
+    plt.ylim(0)
+    plt.legend()
+    plt.grid()
+    plt.show()
 
 if __name__ == "__main__":
     evolve()
