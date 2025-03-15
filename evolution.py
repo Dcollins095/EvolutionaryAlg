@@ -52,10 +52,9 @@ def evolve():
             offspring2 = mutate(parent2)
 
             new_population.extend([offspring1, offspring2])
-
+        new_population = new_population[:-5]
         #add random strategies maintaing diversity
-        while len(new_population) < popSize:
-            new_population.append(choice(strats)())
+        new_population.extend([choice(strats)() for _ in range(5)])
 
         population = new_population
 
@@ -74,5 +73,6 @@ def evolve():
     plt.grid()
     plt.show()
 
-if __name__ == "__main__":
-    evolve()
+
+
+evolve()
