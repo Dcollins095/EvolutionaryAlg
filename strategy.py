@@ -12,7 +12,7 @@ class AlwaysDefect(Prisoner):
 class TitForTat(Prisoner):
     def play(self, opponentsHistory):
         if not opponentsHistory:
-            return choice(['C', 'D'])
+            return 'C'
 
         return opponentsHistory[-1]
 
